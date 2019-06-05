@@ -1,28 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Jquery Ajax</title>
-<script
-src="https://code.jquery.com/jquery-3.4.1.min.js"
-integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jquery Ajax</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <style>
 
 </style>
+
 <body>
-<script>
-
-$().ready(function(){ 
-
-
-});
+    <div class="container">
+      
+        <h1>Formulario de envio</h1>
+        <form novalidate>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" onblur="validar(this)" placeholder="Enter su nombre">
+            </div>
+            <div class="form-group">
+                <label for="apellido  ">Apellido</label>
+                <input type="text" class="form-control" id="apellido" onblur="validar(this)" placeholder="Apellido">
+            </div>
+            <div class="form-group">
+                    <label for="edad  ">Edad</label>
+                    <input type="number" class="form-control" id="edad" onblur="validar(this)" placeholder="Edad">
+                </div>
+            <div class="form-group">
+                    <label for="email  ">Email</label>
+                    <input type="email" class="form-control" id="email" onblur="validar(this)" placeholder="example@company.com">
                     
-</script>
+            </div>
+            <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="text" class="form-control" id="contrasena" onblur="validar(this)" placeholder="Ingrese su Contraseña">
+                </div>
+            <button type="button" id="boton-enviar" class="btn btn-primary">Enviar</button>
+        </form>
+
+        <div class="jumbotron mt-3" style="text-align: center">
+                <button class="btn btn-success" id="enviar-datos">MOSTRAR DATOS</button>
+                <button class="btn btn-warning" id="leer-datos">LEER DATOS</button>
+            </div>
+
+    </div>
+
+
+
+
+
+    <script>
+        var datosFormulario= {};
+
+        function validar(e)
+            {
+                console.log(e);
+                var id=e.id;
+                console.log(id);
+                var dato= $('#'+id).val();
+                console.log(id,dato);
+
+                if(dato!=''){
+                    datosFormulario[id]=dato;
+                }
+                
+            }
+
+
+
+        $(document).ready(function () {
+
+            var usuario =
+            {
+                nombre: 'Maria',
+                edad: 23
+            }; 
+
+            $('#boton-enviar').click(function(){
+                console.log(datosFormulario);
+                if(Object.keys(datosFormulario).length ==4){
+                    console.log('Ok.Envio');
+                    enviarDatosPost(datosFormulario);
+                    datosFormulario={};
+                    $('form')[0].reset();
+                }    
+            })
+
+            function leerDatosGet() {
+                $.ajax(
+                    {
+                        url: 'https://5cf801aa7f67dd0014a62f0b.mockapi.io/datos',
+
+                        type: 'get',
+                        data: usuario,
+                        success: function (data, textStatus, jQxhr) {
+                            console.log('OK!', data);
+                        },
+                        error: function (jqXhr, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+            }
+
+
+
+
+            function enviarDatosPost(usuario) {
+
+                $.ajax({
+                    url: 'https://5cf801aa7f67dd0014a62f0b.mockapi.io/datos',
+                    dataType: 'json',
+                    type: 'post',
+                    data: usuario,
+                    success: function (data, textStatus, jQxhr) {
+                        console.log('OK!', data);
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+            }
+
+            $('#enviar-datos').click(function () {
+                enviarDatosPost(usuario);
+                //console.log('enviar');
+            });
+
+            $('#leer-datos').click(function () {
+                leerDatosGet();
+                //console.log('leer');
+            });
+
+
+            console.log('Documento listo!');
+
+            // $('#nombre').blur(function(){
+            //     console.log('blur nombre');
+            // });
+
+
+          
+        });
+
+    </script>
 
 
 </body>
+
 </html>
