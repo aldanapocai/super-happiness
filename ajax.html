@@ -23,24 +23,35 @@
             <div class="form-group">
                 <label for="nombre">Nombre</label>
                 <input type="text" class="form-control" id="nombre" onblur="validar(this)" placeholder="Enter su nombre">
+                
+                <div id="error-nombre" class="alert alert-danger mt-1">Campo no valido</div>
             </div>
+           
             <div class="form-group">
                 <label for="apellido  ">Apellido</label>
                 <input type="text" class="form-control" id="apellido" onblur="validar(this)" placeholder="Apellido">
+                
+                <div id="error-apellido" class="alert alert-danger mt-1">Campo no valido</div>
             </div>
             <div class="form-group">
                     <label for="edad  ">Edad</label>
                     <input type="number" class="form-control" id="edad" onblur="validar(this)" placeholder="Edad">
-                </div>
+                  
+                    <div id="error-edad" class="alert alert-danger mt-1">Campo no valido</div>
+            </div>
             <div class="form-group">
                     <label for="email  ">Email</label>
-                    <input type="email" class="form-control" id="email" onblur="validar(this)" placeholder="example@company.com">
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" onblur="validar(this)" placeholder="example@company.com">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     
+                    <div id="error-email" class="alert alert-danger mt-1">Campo no valido</div>        
             </div>
             <div class="form-group">
                     <label for="contrasena">Contraseña</label>
                     <input type="text" class="form-control" id="contrasena" onblur="validar(this)" placeholder="Ingrese su Contraseña">
-                </div>
+                    
+                    <div id="error-contrasena" class="alert alert-danger mt-1">Campo no valido</div>
+            </div>
             <button type="button" id="boton-enviar" class="btn btn-primary">Enviar</button>
         </form>
 
@@ -67,8 +78,13 @@
                 console.log(id,dato);
 
                 if(dato!=''){
+                    $('#error-'+id).hide();
                     datosFormulario[id]=dato;
                 }
+                else{
+                    $('#error-'+id).show();
+                }
+                
                 
             }
 
@@ -84,7 +100,7 @@
 
             $('#boton-enviar').click(function(){
                 console.log(datosFormulario);
-                if(Object.keys(datosFormulario).length ==4){
+                if(Object.keys(datosFormulario).length ==5){
                     console.log('Ok.Envio');
                     enviarDatosPost(datosFormulario);
                     datosFormulario={};
@@ -144,7 +160,11 @@
             //     console.log('blur nombre');
             // });
 
-
+            $('#error-nombre').hide();
+            $('#error-apellido').hide();
+            $('#error-edad').hide();
+            $('#error-email').hide();
+            $('#error-contrasena').hide();
           
         });
 
